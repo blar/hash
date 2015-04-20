@@ -1,0 +1,31 @@
+{
+    "name": "blar/hash",
+    "description": "Hash for PHP",
+    "type": "library",
+    "keywords": ["php", "hash"],
+    "homepage": "https://github.com/blar/hash/",
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name": "Andreas Treichel",
+            "email": "gmblar+github@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.5.0"
+    },
+    "require-dev": {
+        "blar/php-coveralls": "dev-master"
+    },
+    "support": {
+        "source": "https://github.com/blar/hash/",
+        "issues": "https://github.com/blar/hash/issues",
+        "wiki": "https://github.com/blar/hash/wiki"
+    },
+    "autoload": {
+        "psr-4": {
+            "Blar\\Hash\\": "lib/Blar/Hash/"
+        }
+    }
+}
