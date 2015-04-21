@@ -26,16 +26,10 @@ class Hash {
     private $algo;
 
     /**
-     * @var string
-     */
-    private $hmacSecret;
-
-    /**
      * @param string $algo
      */
-    public function __construct($algo, $hmacSecret = NULL) {
+    public function __construct($algo) {
         $this->algo = $algo;
-        $this->hmacSecret = $hmacSecret;
     }
 
     /**
@@ -54,11 +48,7 @@ class Hash {
      * @return resource
      */
     protected function createHandle() {
-        if(is_null($this->hmacSecret)) {
-            return hash_init($this->algo);
-        }
-
-        return hash_init($this->algo, HASH_HMAC, $this->hmacSecret);
+        return hash_init($this->algo);
     }
 
     /**
@@ -81,33 +71,55 @@ class Hash {
     }
 
     /**
-     * @param string $data
+     * @return string
      */
-    public function update($data) {
+    public function getAlgo() {
+        return $this->algo;
+    }
+
+    /**
+     * @param string $algo
+     * @return $this
+     */
+    protected function setAlgo($algo) {
+        $this->algo = $algo;
+        return $this;
+    }
+
+    /**
+     * @param string $data
+     * @return $this
+     */
+    public function push($data) {
         $result = hash_update($this->getHandle(), $data);
         if(!$result) {
             throw new RuntimeException();
         }
+        return $this;
     }
 
     /**
      * @param string $fileName
+     * @return $this
      */
-    public function updateFile($fileName) {
+    public function pushFile($fileName) {
         $result = hash_update_file($this->getHandle(), $fileName);
         if(!$result) {
             throw new RuntimeException();
         }
+        return $this;
     }
 
     /**
-     * @param resource $stream
+     * @param $stream
+     * @return $this
      */
-    public function updateStream($stream) {
+    public function pushStream($stream) {
         $result = hash_update_stream($this->getHandle(), $stream);
         if(!$result) {
             throw new RuntimeException();
         }
+        return $this;
     }
 
     /**
@@ -115,6 +127,14 @@ class Hash {
      */
     public function getValue() {
         $handle = hash_copy($this->getHandle());
+        return hash_final($handle);
+    }
+
+    /**
+     * @return string
+     */
+    public function getRawValue() {
+        $handle = hash_copy($this->getHandle(), true);
         return hash_final($handle);
     }
 

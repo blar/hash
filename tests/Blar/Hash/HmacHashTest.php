@@ -8,29 +8,29 @@ namespace Blar\Hash;
 
 use PHPUnit_Framework_TestCase as TestCase;
 
-class HashTest extends TestCase {
+class HmacHashTest extends TestCase {
 
     public function testMd5() {
-        $hash = new Hash('md5');
+        $hash = new HmacHash('md5', 1337);
         $hash->push('Hello World');
-        $this->assertEquals('b10a8db164e0754105b7a99be72e3fe5', $hash);
+        $this->assertEquals('53d98cf0aa1b21b7fc2c676a86106221', $hash);
     }
 
     public function testSha1() {
-        $hash = new Hash('sha1');
+        $hash = new Hash('sha1', 1337);
         $hash->push('Hello World');
         $this->assertEquals('0a4d55a8d778e5022fab701977c5d840bbc486d0', $hash);
     }
 
     public function testClone() {
-        $foo = new Hash('sha1');
+        $foo = new HmacHash('sha1', 1337);
         $foo->push('foo');
 
         $foobar = clone $foo;
         $foobar->push('bar');
 
-        $this->assertEquals('0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33', $foo);
-        $this->assertEquals('8843d7f92416211de9ebb963ff4ce28125932878', $foobar);
+        $this->assertEquals('c2dc7694d120f7c286e69f896ee15243a5c28cf5', $foo);
+        $this->assertEquals('ea51ab0e6bc7bd5503fc721b7f566abb637ae651', $foobar);
     }
 
 }

@@ -9,24 +9,24 @@
 ### MD5
 
     $hash = new Hash('MD5');
-    $hash->update('foobar');
+    $hash->push('foobar');
     echo $hash;
 
 ### SHA-1
 
     $hash = new Hash('SHA1');
-    $hash->update('foobar');
+    $hash->push('foobar');
     echo $hash;
 
 ### SHA-1 mit HMAC
 
-    $hash = new Hash('SHA1', '1337');
-    $hash->update('foobar');
+    $hash = new HmacHash('SHA1', '1337');
+    $hash->push('foobar');
     echo $hash;
 
 ### SHA-1 mit HMAC und mehreren Teilen
 
-    $hash = new Hash('SHA1', '1337');
-    $hash->update('foo');
-    $hash->update('bar');
+    $hash = new HmacHash('SHA1', '1337');
+    $hash->push('foo');
+    $hash->push('bar');
     echo $hash;
