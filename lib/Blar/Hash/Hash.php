@@ -134,8 +134,8 @@ class Hash {
      * @return string
      */
     public function getRawValue() {
-        $handle = hash_copy($this->getHandle(), true);
-        return hash_final($handle);
+        $handle = hash_copy($this->getHandle());
+        return hash_final($handle, true);
     }
 
 }
