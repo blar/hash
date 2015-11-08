@@ -14,7 +14,7 @@ class HmacHashTest extends TestCase {
         $hash = new HmacHash('md5', '1337');
         $hash->push('Hello World');
         $this->assertEquals('53d98cf0aa1b21b7fc2c676a86106221', $hash);
-        $this->assertEquals(hash_hmac('md5', 'Hello World', 1337), $hash);
+        $this->assertEquals(hash_hmac('md5', 'Hello World', '1337'), $hash);
     }
 
     public function testSha1() {
