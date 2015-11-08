@@ -10,6 +10,10 @@ use PHPUnit_Framework_TestCase as TestCase;
 
 class HashTest extends TestCase {
 
+    public function testListAlgos() {
+        $this->assertTrue(is_array(Hash::listAlgos()));
+    }
+
     public function testMd5FromString() {
         $hash = new Hash('md5');
         $hash->push('Hello World');
@@ -33,10 +37,10 @@ class HashTest extends TestCase {
 
     public function testMd5FromStream() {
         $stream = fopen(__DIR__.'/message1.bin', 'r');
-        $hash1 = new Hash('md5');
-        $hash1->pushStream($stream);
+        $hash = new Hash('md5');
+        $hash->pushStream($stream);
 
-        $this->assertEquals('008ee33a9d58b51cfeb425b0959121c9', (string) $hash1);
+        $this->assertEquals('008ee33a9d58b51cfeb425b0959121c9', (string) $hash);
     }
 
     public function testSha1FromString() {
