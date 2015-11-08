@@ -26,10 +26,17 @@ class Hash {
     private $algo;
 
     /**
+     * @return array
+     */
+    public static function listAlgos() {
+        return hash_algos();
+    }
+
+    /**
      * @param string $algo
      */
     public function __construct($algo) {
-        $this->algo = $algo;
+        $this->setAlgo($algo);
     }
 
     /**
@@ -63,6 +70,7 @@ class Hash {
 
     /**
      * @param resource $handle
+     *
      * @return $this
      */
     protected function setHandle($handle) {
@@ -79,6 +87,7 @@ class Hash {
 
     /**
      * @param string $algo
+     *
      * @return $this
      */
     protected function setAlgo($algo) {
@@ -88,6 +97,7 @@ class Hash {
 
     /**
      * @param string $data
+     *
      * @return $this
      */
     public function push($data) {
@@ -100,6 +110,7 @@ class Hash {
 
     /**
      * @param string $fileName
+     *
      * @return $this
      */
     public function pushFile($fileName) {
@@ -112,6 +123,7 @@ class Hash {
 
     /**
      * @param $stream
+     *
      * @return $this
      */
     public function pushStream($stream) {
@@ -135,7 +147,7 @@ class Hash {
      */
     public function getRawValue() {
         $handle = hash_copy($this->getHandle());
-        return hash_final($handle, true);
+        return hash_final($handle, TRUE);
     }
 
 }

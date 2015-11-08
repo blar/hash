@@ -18,6 +18,10 @@ class HmacHash extends Hash {
      */
     private $secret;
 
+    /**
+     * @param string $algo
+     * @param string $secret
+     */
     public function __construct($algo, $secret) {
         parent::__construct($algo);
         $this->setSecret($secret);
@@ -39,6 +43,9 @@ class HmacHash extends Hash {
         return $this;
     }
 
+    /**
+     * @return resource
+     */
     protected function createHandle() {
         return hash_init($this->getAlgo(), HASH_HMAC, $this->getSecret());
     }
