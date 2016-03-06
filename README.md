@@ -11,34 +11,40 @@
 
 ### MD5
 
-    $hash = new Hash('MD5');
-    $hash->push('foobar');
-    echo $hash;
+    $generator = new HashGenerator('MD5');
+    $hash = $generator->hash('foobar');
+
+### MD5 mit mehreren Teilen
+
+    $generator = new HashGenerator('MD5');
+    $generator->push('foo');
+    $generator->push('bar');
+    echo $generator->getHash();
 
 ### MD5 von einer Datei
 
-    $hash = new Hash('MD5');
-    $hash->pushFile('foobar.txt');
-    echo $hash;
+    $generator = new HashGenerator('MD5');
+    $generator->pushFile('foobar.txt');
+    echo $generator->getHash();
 
 ### SHA-1
 
-    $hash = new Hash('SHA1');
-    $hash->push('foobar');
-    echo $hash;
+    $generator = new HashGenerator('SHA1');
+    $generator->push('foobar');
+    echo $generator->getHash();
 
 ### SHA-1 mit HMAC
 
-    $hash = new HmacHashGenerator('SHA1', '1337');
-    $hash->push('foobar');
-    echo $hash;
+    $generator = new HmacHashGenerator('SHA1', '1337');
+    $generator->push('foobar');
+    echo $generator->getHash();
 
 ### SHA-1 mit HMAC und mehreren Teilen
 
-    $hash = new HmacHashGenerator('SHA1', '1337');
-    $hash->push('foo');
-    $hash->push('bar');
-    echo $hash;
+    $generator = new HmacHashGenerator('SHA1', '1337');
+    $generator->push('foo');
+    $generator->push('bar');
+    echo $generator->getHash();;
 
 ### Unterstützte Hash-Algorithmen abrufen
 
