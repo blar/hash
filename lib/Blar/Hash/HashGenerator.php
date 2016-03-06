@@ -93,20 +93,6 @@ class HashGenerator {
         return hash_init($this->getAlgorithm());
     }
 
-    /**
-     * @return string
-     */
-    public function getFormat(): string {
-        return $this->format;
-    }
-
-    /**
-     * @param string $format
-     */
-    public function setFormat(string $format) {
-        $this->format = $format;
-    }
-
     public function __clone() {
         $handle = hash_copy($this->getHandle());
         $this->setHandle($handle);
