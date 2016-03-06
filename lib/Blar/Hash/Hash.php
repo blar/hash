@@ -6,8 +6,6 @@
 
 namespace Blar\Hash;
 
-use RuntimeException;
-
 /**
  * Class Hash
  *
@@ -16,138 +14,143 @@ use RuntimeException;
 class Hash {
 
     /**
-     * @var resource
+     * @var string
      */
-    private $handle;
+    private $algorithm;
 
     /**
      * @var string
      */
-    private $algo;
+    private $value;
+
+    /**
+     * @param string $value
+     *
+     * @return bool
+     */
+    private static function isOpensslFormat(string $value): bool {
+        return preg_match('#{(.*?)}(.+)#', $value) === 1;
+    }
+
+    /**
+     * Hash constructor.
+     *
+     * @param string $value
+     * @param string $algorithm
+     */
+    public function __construct(string $value = '', string $algorithm = '') {
+        if(static::isOpensslFormat($value)) {
+            preg_match('#{(.*?)}(.+)#', $value, $matches);
+            $algorithm = $matches[1];
+            $value = $matches[2];
+        }
+
+        $this->setAlgorithm($algorithm);
+
+        if(ctype_xdigit($value)) {
+            $this->setHexValue($value);
+        }
+        else {
+            $this->setValue($value);
+        }
+    }
 
     /**
      * @return array
      */
-    public static function listAlgos() {
+    public static function listAlgorithms(): array {
         return hash_algos();
     }
 
     /**
-     * @param string $algo
+     * @return string
      */
-    public function __construct($algo) {
-        $this->setAlgo($algo);
+    public function __toString(): string {
+        return $this->getHexValue();
+    }
+
+    /**
+     * @param string $value
+     */
+    public function setHexValue(string $value) {
+        $this->setValue(hex2bin($value));
     }
 
     /**
      * @return string
      */
-    public function __toString() {
-        return $this->getValue();
-    }
-
-    public function __clone() {
-        $handle = hash_copy($this->getHandle());
-        $this->setHandle($handle);
-    }
-
-    /**
-     * @return resource
-     */
-    protected function createHandle() {
-        return hash_init($this->algo);
-    }
-
-    /**
-     * @return resource
-     */
-    protected function getHandle() {
-        if(!$this->handle) {
-            $this->handle = $this->createHandle();
-        }
-        return $this->handle;
-    }
-
-    /**
-     * @param resource $handle
-     *
-     * @return $this
-     */
-    protected function setHandle($handle) {
-        $this->handle = $handle;
-        return $this;
+    public function getHexValue(): string {
+        return bin2hex($this->getValue());
     }
 
     /**
      * @return string
      */
-    public function getAlgo() {
-        return $this->algo;
+    public function getValue(): string {
+        return $this->value;
     }
 
     /**
-     * @param string $algo
-     *
-     * @return $this
+     * @param string $value
      */
-    protected function setAlgo($algo) {
-        $this->algo = $algo;
-        return $this;
+    public function setValue(string $value) {
+        $this->value = $value;
     }
 
     /**
-     * @param string $data
+     * Compare with another hash.
+     * Minimize timing attacks.
      *
-     * @return $this
+     * @param string $hash
+     *
+     * @return bool
      */
-    public function push($data) {
-        $result = hash_update($this->getHandle(), $data);
-        if(!$result) {
-            throw new RuntimeException();
+    public function compareWith($hash): bool {
+        return static::compare($this, $hash);
+    }
+
+    /**
+     * Compare to hashes.
+     * Minimize timing attacks.
+     *
+     * @param string $hash1 Known hash
+     * @param string $hash2 User hash
+     *
+     * @return bool
+     */
+    public static function compare($hash1, $hash2): bool {
+        if(!is_string($hash1)) {
+            $hash1 = (string) $hash1;
         }
-        return $this;
-    }
-
-    /**
-     * @param string $fileName
-     *
-     * @return $this
-     */
-    public function pushFile($fileName) {
-        $result = hash_update_file($this->getHandle(), $fileName);
-        if(!$result) {
-            throw new RuntimeException();
+        if(!is_string($hash2)) {
+            $hash2 = (string) $hash2;
         }
-        return $this;
-    }
-
-    /**
-     * @param $stream
-     *
-     * @return $this
-     */
-    public function pushStream($stream) {
-        $result = hash_update_stream($this->getHandle(), $stream);
-        if(!$result) {
-            throw new RuntimeException();
-        }
-        return $this;
+        return hash_equals($hash1, $hash2);
     }
 
     /**
      * @return string
      */
-    public function getValue() {
-        $handle = hash_copy($this->getHandle());
-        return hash_final($handle);
+    public function getOpensslValue(): string {
+        return sprintf(
+            '{%s}%s',
+            $this->getAlgorithm(),
+            base64_encode($this->getValue())
+        );
     }
 
     /**
      * @return string
      */
-    public function getRawValue() {
-        $handle = hash_copy($this->getHandle());
-        return hash_final($handle, TRUE);
+    public function getAlgorithm(): string {
+        return $this->algorithm;
+    }
+
+    /**
+     * @param string $algorithm
+     */
+    public function setAlgorithm(string $algorithm) {
+        $this->algorithm = $algorithm;
     }
 
 }
