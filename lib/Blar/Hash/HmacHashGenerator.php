@@ -6,8 +6,6 @@
 
 namespace Blar\Hash;
 
-use Blar\Hash\Hash;
-
 /**
  * Class HmacHashGenerator
  *

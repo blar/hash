@@ -6,6 +6,8 @@
 
 namespace Blar\Hash;
 
+use RuntimeException;
+
 /**
  * Class HashGenerator
  *
