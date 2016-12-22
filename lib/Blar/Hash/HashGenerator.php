@@ -56,6 +56,10 @@ class HashGenerator {
      * @param string $algorithm
      */
     protected function setAlgorithm(string $algorithm) {
+        if(!Hash::isSupportedAlgorithm($algorithm)) {
+            $message = sprintf('Algorithm "%s" is not supported', $algorithm);
+            throw new RuntimeException($message);
+        }
         $this->algorithm = $algorithm;
     }
 

@@ -108,17 +108,24 @@ class HashGeneratorTest extends TestCase {
         $this->assertFalse(Hash::compare($hash3, $hash2));
         $this->assertTrue(Hash::compare($hash3, $hash3));
 
-        $this->assertTrue($hash1->compareWith($hash1));
-        $this->assertTrue($hash1->compareWith($hash2));
-        $this->assertFalse($hash1->compareWith($hash3));
+        $this->assertTrue($hash1->compareTo($hash1));
+        $this->assertTrue($hash1->compareTo($hash2));
+        $this->assertFalse($hash1->compareTo($hash3));
 
-        $this->assertTrue($hash2->compareWith($hash1));
-        $this->assertTrue($hash2->compareWith($hash2));
-        $this->assertFalse($hash2->compareWith($hash3));
+        $this->assertTrue($hash2->compareTo($hash1));
+        $this->assertTrue($hash2->compareTo($hash2));
+        $this->assertFalse($hash2->compareTo($hash3));
 
-        $this->assertFalse($hash3->compareWith($hash1));
-        $this->assertFalse($hash3->compareWith($hash2));
-        $this->assertTrue($hash3->compareWith($hash3));
+        $this->assertFalse($hash3->compareTo($hash1));
+        $this->assertFalse($hash3->compareTo($hash2));
+        $this->assertTrue($hash3->compareTo($hash3));
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testUnsupportedAlgorithm() {
+        $generator = new HashGenerator('foobar');
     }
 
 }

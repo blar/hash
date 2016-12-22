@@ -6,6 +6,8 @@
 
 namespace Blar\Hash;
 
+use RuntimeException;
+
 /**
  * Class Hash
  *
@@ -62,6 +64,10 @@ class Hash {
         return hash_algos();
     }
 
+    public static function isSupportedAlgorithm(string $algorithm) {
+        return array_search($algorithm, static::listAlgorithms()) !== FALSE;
+    }
+
     /**
      * @return string
      */
@@ -105,7 +111,7 @@ class Hash {
      *
      * @return bool
      */
-    public function compareWith($hash): bool {
+    public function compareTo($hash): bool {
         return static::compare($this, $hash);
     }
 

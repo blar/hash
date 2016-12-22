@@ -7,6 +7,8 @@
 
 # Hash
 
+Erstellen und Vergleichen von Hashes.
+
 ## Beispiele
 
 ### MD5

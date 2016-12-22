@@ -16,7 +16,7 @@ class HmacHashGenerator extends HashGenerator {
     /**
      * @var string
      */
-    private $secret;
+    private $secret = '';
 
     /**
      * @param string $algorithm
@@ -57,7 +57,7 @@ class HmacHashGenerator extends HashGenerator {
     }
 
     public function hasSecret(): bool {
-        return $this->secret !== NULL;
+        return $this->secret !== '';
     }
 
     /**
